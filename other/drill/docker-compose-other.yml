@@ -1,0 +1,55 @@
+version: "2"
+services:
+
+  zookeeper-1:
+    container_name: zookeeper-1    
+    networks: ["vnet"]
+    hostname: zookeeper-1.vnet
+    image: smizy/zookeeper:3.4-alpine
+    environment:
+      - SERVICE_2181_NAME=zookeeper
+      - SERVICE_2888_IGNORE=true
+      - SERVICE_3888_IGNORE=true
+      
+    command: -server 1 1 vnet
+
+  drillbit-1:
+    container_name: drillbit-1
+    networks: ["vnet"]
+    hostname: drillbit-1.vnet
+    image: smizy/apache-drill:1.13.0-alpine
+    ports: 
+      - 8047:8047
+    depends_on: ["zookeeper-1"]  
+    environment:
+      - SERVICE_8047_NAME=drillbit
+      - DRILL_HEAP=512M 
+      - DRILL_MAX_DIRECT_MEMORY=1G   
+      - DRILL_ZOOKEEPER_QUORUM=zookeeper-1.vnet:2181 
+
+  mongo:
+    image: mongo
+    restart: always
+    networks: ["vnet"]
+    hostname: mongo-1.vnet
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: pass
+
+  mongo-express:
+    image: mongo-express
+    networks: ["vnet"]
+    hostname: mongo-express-1.vnet
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
+
+networks:
+  vnet:    
+    external:
+      name: vnet 

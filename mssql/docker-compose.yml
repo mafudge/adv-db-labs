@@ -1,0 +1,16 @@
+version: '3'
+services:
+  mssql:
+    image: "microsoft/mssql-server-linux:2017-latest"
+    #build: mssql/.
+    container_name: mssql
+    environment:
+      - "ACCEPT_EULA=Y"
+      - "SA_PASSWORD=SU2Orange!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+      - C:/:/root
+volumes:
+  mssql-data:

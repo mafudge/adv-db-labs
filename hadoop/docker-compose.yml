@@ -1,0 +1,19 @@
+version: '3'
+services:
+  cloudera:
+    image: "cloudera/quickstart:latest"
+    container_name: cloudera
+    hostname: quickstart.cloudera
+    privileged: true
+    stdin_open: true
+    tty: true
+    ports:
+      - "8888:8888" #Hue
+      - "7180:7180" # Cloudera Manager
+      - "8080:80" #Tutotial
+    entrypoint: /usr/bin/docker-quickstart
+    volumes:
+      - cloudera-data:/var/lib
+      - C:/:/root
+volumes:
+  cloudera-data:
