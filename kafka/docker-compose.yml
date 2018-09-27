@@ -150,6 +150,7 @@ services:
       - connect
     volumes:
       - mi2:/usr/share/java/monitoring-interceptors/
+      - ../../datasets:/datasets
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
                        cub kafka-ready -b broker:9092 1 20 && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
