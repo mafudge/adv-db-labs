@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    ports:
+      - "7474:7474" #http
+      - "7473:7473" #https
+      - "7687:7687" #bolt
+    environment:
+      - "NEO4J_AUTH=none"
+      - "NEO4J_dbms_memory_pagecache_size=1G"
