@@ -29,4 +29,6 @@ services:
     build: webapp/.
     ports:
       - 5000:5000
+    links:
+      - mongo
       
