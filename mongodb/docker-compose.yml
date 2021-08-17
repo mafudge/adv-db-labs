@@ -2,33 +2,53 @@ version: "3"
 services:
 
   mongo:
-    image: ist769/mongo:latest
+    image: mongo:latest
     restart: always
-#    networks: ["vnet"]
-#    hostname: mongo-1.vnet
+    networks:
+      mongo_net:
     hostname: mongo
     ports:
       - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_ROOT_PASSWORD: SU2orange!
 
   mongo-express:
-    image: mongo-express
-#    networks: ["vnet"]
-#    hostname: mongo-express-1.vnet
+    image: mongo-express:latest
+    networks: 
+      mongo_net:
     hostname: mongo-express
     restart: always
     ports:
       - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
-
+      ME_CONFIG_MONGODB_ADMINPASSWORD: SU2orange!
+      ME_CONFIG_MONGODB_URL: mongodb://admin:SU2orange!@mongo:27017/
+    depends_on: 
+      - mongo
   sample-app:
     build: webapp/.
     ports:
       - 5000:5000
-    links:
+    networks: 
+      mongo_net:
+    depends_on: 
       - mongo
       
+  mongo-client:
+    image: mongoclient/mongoclient:latest
+    restart: always
+    hostname: mongoclient
+    ports:
+      - 8082:3000
+    environment:
+      MONGOCLIENT_DEFAULT_CONNECTION_URL: mongodb://admin:SU2orange!@mongo:27017/
+    networks:
+      mongo_net:
+    depends_on: 
+      - mongo
+
+networks: 
+  mongo_net:
+    driver: bridge 

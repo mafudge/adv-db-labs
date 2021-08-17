@@ -1,19 +1,26 @@
 version: '3'
 services:
   cloudera:
-    image: "cloudera/quickstart:latest"
+    image: cloudera/quickstart:latest
+#    image: "cloudera/sandbox-cdh:6.3.0" #cloudera/quickstart:latest
     container_name: cloudera
     hostname: quickstart.cloudera
     privileged: true
     stdin_open: true
     tty: true
     ports:
-      - "8888:8888" #Hue
+      - "8080:8888" #Hue
       - "7180:7180" # Cloudera Manager
-      - "8080:80" #Tutotial
+      - "8081:80" #Tutotial
     entrypoint: /usr/bin/docker-quickstart
     volumes:
       - cloudera-data:/var/lib
       - ../../datasets:/home/cloudera/datasets
+    networks: 
+      - cloudera_net
+      
 volumes:
   cloudera-data:
+networks:
+  cloudera_net:
+    driver: bridge

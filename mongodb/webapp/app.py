@@ -6,7 +6,7 @@ from flask import Flask, escape, request, render_template, redirect, url_for
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
-myclient = pymongo.MongoClient("mongodb://admin:pass@mongo:27017/")
+myclient = pymongo.MongoClient("mongodb://admin:SU2orange!@mongo:27017/")
 mydb = myclient['demo']
 feedbackcollection = mydb['feedback']
 
