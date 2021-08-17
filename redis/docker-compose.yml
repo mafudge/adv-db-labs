@@ -7,3 +7,19 @@ services:
     hostname: redis
     ports:
       - 6379:6379
+  redis-commander:
+    image: rediscommander/redis-commander
+    environment: 
+      REDIS_PORT: "6379"
+      REDIS_HOST: "redis" 
+    ports: 
+      - 8081:8081
+    links: 
+      - redis 
+
+  retwis:
+    build: ./retwis
+    ports: 
+      - 8080:80
+    links: 
+      - redis       

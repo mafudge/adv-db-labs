@@ -1,8 +1,8 @@
 version: '3'
 services:
   cloudera:
-    image: cloudera/quickstart:latest
-#    image: "cloudera/sandbox-cdh:6.3.0" #cloudera/quickstart:latest
+    image: cloudera/quickstart:latest #cloudera/quickstart:latest
+#    image: "cloudera/sandbox-cdh:6.3.0" 
     container_name: cloudera
     hostname: quickstart.cloudera
     privileged: true
@@ -12,6 +12,7 @@ services:
       - "8080:8888" #Hue
       - "7180:7180" # Cloudera Manager
       - "8081:80" #Tutotial
+      - "10000:10000" # hue
     entrypoint: /usr/bin/docker-quickstart
     volumes:
       - cloudera-data:/var/lib
