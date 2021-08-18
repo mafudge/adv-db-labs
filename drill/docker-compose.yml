@@ -14,7 +14,7 @@ services:
       MINIO_ROOT_PASSWORD: SU2orange!
 
   drill:
-    image: drill/apache-drill:latest
+    image: apache/drill:1.19.0
     command: /bin/bash
     tty: true
     ports:

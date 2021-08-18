@@ -1,0 +1,9 @@
+{
+    "type": "elastic",
+    "hosts": [
+      "http://es01:9200",
+      "http://es02:9200",
+      "http://es03:9200"
+    ],
+    "enabled": true
+  }

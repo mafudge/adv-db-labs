@@ -4,8 +4,6 @@ services:
   mongo:
     image: mongo:latest
     restart: always
-    networks:
-      mongo_net:
     hostname: mongo
     ports:
       - 27017:27017
@@ -15,8 +13,6 @@ services:
 
   mongo-express:
     image: mongo-express:latest
-    networks: 
-      mongo_net:
     hostname: mongo-express
     restart: always
     ports:
@@ -31,8 +27,6 @@ services:
     build: webapp/.
     ports:
       - 5000:5000
-    networks: 
-      mongo_net:
     depends_on: 
       - mongo
       
@@ -44,11 +38,37 @@ services:
       - 8082:3000
     environment:
       MONGOCLIENT_DEFAULT_CONNECTION_URL: mongodb://admin:SU2orange!@mongo:27017/
-    networks:
-      mongo_net:
     depends_on: 
       - mongo
 
-networks: 
-  mongo_net:
-    driver: bridge 
+  drill:
+    image: apache/drill:1.19.0
+    hostname: drill
+    command: /bin/bash
+    tty: true
+    ports:
+    - "8047:8047"
+    depends_on:
+    - mongo
+    links:
+    - mongo
+
+  # sqlpad:
+  #   image: sqlpad/sqlpad:6.7.1 #5.6
+  #   environment:
+  #     - "SQLPAD_ADMIN=admin@admin.org"
+  #     - "SQLPAD_ADMIN_PASSWORD=SU2orange!"
+  #     - "SQLPAD_AUTH_DISABLED=True"
+  #     - "SQLPAD_AUTH_DISABLED_DEFAULT_ROLE=admin"
+  #   links:
+  #     - mongo
+  #     - drill
+  #   ports:
+  #     - "5001:3000"
+  #   volumes:
+  #     - sqlpad-volume:/var/lib/sqlpad
+  #   networks:
+  #     mongo_net:
+
+# volumes: 
+#   sqlpad-volume:

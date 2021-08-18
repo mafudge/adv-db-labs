@@ -80,29 +80,15 @@ services:
     links: 
       - cassandra0
 
-# kairosdb:
-#  image: snuids/kairosdb:v1.1.3
-#  container_name: kairosdb
-#  environment:
-#   - CASSANDRA_HOST_LIST=cassandra0:9160
-#  ports:
-#   - "4242:4242"
-#   - "8083:8083"
-#  depends_on:
-#   - cassandra0
- 
-##############################
-# grafana:
-#  image: grafana/grafana:master
-#  container_name: grafana
-#  ports:
-#   - 3000:3000
- 
-##############################
-# portainer:
-#  container_name: portainer
-#  image: portainer/portainer
-#  volumes:
-#    - /var/run/docker.sock:/var/run/docker.sock
-#  ports:
-#    - 9000:9000
+  drill:
+    image: apache/drill:1.19.0
+    hostname: drill
+    command: /bin/bash
+    tty: true
+    ports:
+    - "8047:8047"
+    depends_on:
+    - cassandra0
+    links:
+    - cassandra0
+
