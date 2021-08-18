@@ -1,0 +1,99 @@
+version: "3"
+services:
+  minio:
+    image: minio/minio:latest
+    hostname: minio
+    volumes: 
+      -  ./data:/data 
+    command: server /data --console-address ":9001"
+    ports:
+    - "9000:9000"
+    - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: SU2orange!
+
+  drill:
+    image: drill/apache-drill:latest
+    command: /bin/bash
+    tty: true
+    ports:
+    - "8047:8047"
+    depends_on:
+    - minio
+    links:
+    - minio
+
+
+# # version: '3.1'
+
+# # services:
+# #   apache-drill:
+# #     image: harisekhon/apache-drill:${VERSION:-latest}
+# #     ports:
+# #       - 8047:8047
+# #     command: ['supervisord', '-n']
+# #     volumes:
+# #       - c:/tmp:/tmp
+
+# #   zookeeper:
+# #     image: harisekhon/zookeeper:${ZOOKEEPER_VERSION:-latest}
+
+
+
+# version: "2"
+# services:
+
+#   zookeeper-1:
+#     container_name: zookeeper-1    
+#     hostname: zookeeper-1
+#     image: smizy/zookeeper:3.4-alpine
+#     environment:
+#       - SERVICE_2181_NAME=zookeeper
+#       - SERVICE_2888_IGNORE=true
+#       - SERVICE_3888_IGNORE=true
+      
+#     command: -server 1 1 vnet
+
+#   drillbit-1:
+#     container_name: drillbit-1
+#     hostname: drillbit-1
+#     image: smizy/apache-drill:1.16.0-alpine
+#     ports: 
+#       - 8047:8047
+#     depends_on: ["zookeeper-1"]  
+#     environment:
+#       - SERVICE_8047_NAME=drillbit
+#       - DRILL_HEAP=512M 
+#       - DRILL_MAX_DIRECT_MEMORY=1G   
+#       - DRILL_ZOOKEEPER_QUORUM=zookeeper-1:2181 
+
+#   sqlpad:
+#     image: sqlpad/sqlpad:6.7.1 #5.6
+#     environment:
+#       - "SQLPAD_ADMIN=admin@admin.org"
+#       - "SQLPAD_ADMIN_PASSWORD=SU2orange!"
+#       - "SQLPAD_AUTH_DISABLED=True"
+#       - "SQLPAD_AUTH_DISABLED_DEFAULT_ROLE=admin"
+#     links:
+#       - drillbit-1
+#     ports:
+#       - "5001:3000"
+#     volumes:
+#       - sqlpad-volume:/var/lib/sqlpad
+
+#   minio:
+#     image: minio/minio:latest
+#     hostname: minio
+#     volumes: 
+#       -  ../../datasets:/data 
+#     command: server /data --console-address ":9001"
+#     ports:
+#     - "9000:9000"
+#     - "9001:9001"
+#     environment:
+#       MINIO_ROOT_USER: minio
+#       MINIO_ROOT_PASSWORD: SU2orange!
+
+# volumes:
+#     sqlpad-volume:

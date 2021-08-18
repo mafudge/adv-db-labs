@@ -1,7 +1,7 @@
 version: '3'
 services:
   mssql:
-    image: "microsoft/mssql-server-linux:2017-latest"
+    image: "azure-sql-edge:latest"
     #build: mssql/.
     container_name: mssql
     environment:
@@ -11,6 +11,5 @@ services:
       - "1433:1433"
     volumes:
       - mssql-data:/var/opt/mssql
-      - C:/:/root
 volumes:
   mssql-data:
